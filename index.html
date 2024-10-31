@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Processor</title>
+</head>
+<body>
+    <input type="text" id="inputWord" placeholder="Enter text here">
+    <select id="selectOption">
+        <option value="1">Script 1</option>
+        <option value="2">Script 2</option>
+        <option value="3">Script 3</option>
+    </select>
+    <button id="copyButton">Copy</button>
+    <p id="outputWord"></p>
+    <div id="copyNotification" style="display: none;">Copied!</div>
+
+    <script>
+        // Replaces specific letters with their corresponding Unicode characters
+        function processWordScript1(input) {
+            const replacements = {
+                'a': 'Α', 'b': 'Β', 'c': 'С', 'd': 'Đ', 'e': 'Ε',
+                'f': 'Ƒ', 'g': 'Ĝ', 'h': 'Ή', 'i': 'İ', 'j': 'Ј',
+                'k': 'Κ', 'l': 'Ĺ', 'm': 'Μ', 'n': 'Ν', 'o': 'Ø',
+                'p': 'Ρ', 'q': 'Ꝗ', 'r': 'Ř', 's': 'Š', 't': 'Τ',
+                'u': 'Џ', 'v': 'Ṿ', 'w': 'Ш', 'x': 'Χ', 'y': 'Ύ',
+                'z': 'Ζ'
+            };
+            return input.toLowerCase().split('').map(char => replacements[char] || char).join('');
+        }
+
+        // Replaces specific letters with another set of Unicode characters
+        function processWordScript2(input) {
+            return input
+                .replace(/a/g, 'Α')
+                .replace(/b/g, 'Β')
+                .replace(/c/g, 'С')
+                .replace(/d/g, 'Đ')
+                .replace(/e/g, 'Ε')
+                .replace(/f/g, 'Ƒ')
+                .replace(/g/g, 'Ĝ')
+                .replace(/h/g, 'Ή')
+                .replace(/i/g, 'İ')
+                .replace(/j/g, 'Ј')
+                .replace(/k/g, 'Κ')
+                .replace(/l/g, 'Ĺ')
+                .replace(/m/g, 'Μ')
+                .replace(/n/g, 'Ν')
+                .replace(/o/g, 'Ø')
+                .replace(/p/g, 'Ρ')
+                .replace(/q/g, 'Ꝗ')
+                .replace(/r/g, 'Ř')
+                .replace(/s/g, 'Š')
+                .replace(/t/g, 'Τ')
+                .replace(/u/g, 'Џ')
+                .replace(/v/g, 'Ṿ')
+                .replace(/w/g, 'Ш')
+                .replace(/x/g, 'Χ')
+                .replace(/y/g, 'Ύ')
+                .replace(/z/g, 'Ζ');
+        }
+
+        // Replaces letters with a different character set
+        function processWordScript3(input) {
+            const replacements = {
+                'a': 'α', 'b': 'β', 'c': '¢', 'd': '∂', 'e': 'є',
+                'f': 'ƒ', 'g': 'g', 'h': 'н', 'i': 'ι', 'j': 'נ',
+                'k': 'к', 'l': 'ℓ', 'm': 'м', 'n': 'η', 'o': 'σ',
+                'p': 'ρ', 'q': 'q', 'r': 'я', 's': '$', 't': 'т',
+                'u': 'υ', 'v': 'ν', 'w': 'ω', 'x': 'χ', 'y': 'γ',
+                'z': 'z'
+            };
+            return input.toLowerCase().split('').map(char => replacements[char] || char).join('');
+        }
+
+        // Main function to process the word based on the selected option
+        function processWord(option, input) {
+            switch (option) {
+                case 1:
+                    return processWordScript1(input);
+                case 2:
+                    return processWordScript2(input);
+                case 3:
+                    return processWordScript3(input);
+                default:
+                    return input;
+            }
+        }
+
+        // Event listeners for copy and update actions
+        document.getElementById("copyButton").addEventListener("click", function() {
+            const outputText = document.getElementById("outputWord").innerText;
+            navigator.clipboard.writeText(outputText)
+                .then(() => {
+                    const notification = document.getElementById("copyNotification");
+                    notification.style.display = 'block';
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 1000);
+                })
+                .catch(err => {
+                    console.error('Could not copy text:', err);
+                });
+        });
+
+        // Update output text based on the input and selected option
+        function updateOutput() {
+            const inputText = document.getElementById("inputWord").value;
+            const selectedOption = parseInt(document.getElementById("selectOption").value);
+            const processedText = processWord(selectedOption, inputText);
+            document.getElementById("outputWord").innerText = processedText;
+        }
+
+        document.getElementById("inputWord").addEventListener("input", updateOutput);
+        document.getElementById("selectOption").addEventListener("change", updateOutput);
+    </script>
+</body>
+</html>
